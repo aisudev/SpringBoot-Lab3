@@ -3,6 +3,7 @@ package se331.lab.rest.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,5 +26,6 @@ public class Event {
     @ManyToOne
     Organizer organizer;
     @ManyToMany
-    List<Participant> participants;
+    @Builder.Default
+    List<Participant> participants = new ArrayList<>();
 }

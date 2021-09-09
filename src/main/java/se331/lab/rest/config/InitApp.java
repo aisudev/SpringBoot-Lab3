@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se331.lab.rest.entity.Event;
 import se331.lab.rest.entity.Organizer;
+import se331.lab.rest.entity.Participant;
 import se331.lab.rest.repository.EventRepository;
 import se331.lab.rest.repository.OrganizerRepository;
+import se331.lab.rest.repository.ParticipantRepository;
 
 @Component
 public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
@@ -18,6 +20,9 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
     @Autowired
     OrganizerRepository organizerRepository;
 
+    @Autowired
+    ParticipantRepository participantRepository;
+
     @Override
     @Transactional
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
@@ -25,6 +30,13 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         org1 = organizerRepository.save(Organizer.builder().name("CAMT").build());
         org2 = organizerRepository.save(Organizer.builder().name("CMU").build());
         org3 = organizerRepository.save(Organizer.builder().name("Chiang Mai").build());
+
+        Participant a, b, c, d, e;
+        a = participantRepository.save(Participant.builder().name("a").telNo("1234567890").build());
+        b = participantRepository.save(Participant.builder().name("b").telNo("1234567891").build());
+        c = participantRepository.save(Participant.builder().name("c").telNo("1234567892").build());
+        d = participantRepository.save(Participant.builder().name("d").telNo("1234567893").build());
+        e = participantRepository.save(Participant.builder().name("e").telNo("1234567894").build());
 
         Event tempEvent;
         tempEvent = eventRepository.save(Event.builder()
@@ -37,6 +49,12 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petAllowed(false).build());
         tempEvent.setOrganizer(org1);
         org1.getOwnEvents().add(tempEvent);
+        tempEvent.getParticipants().add(a);
+        tempEvent.getParticipants().add(b);
+        tempEvent.getParticipants().add(c);
+        a.getEventHistory().add(tempEvent);
+        b.getEventHistory().add(tempEvent);
+        c.getEventHistory().add(tempEvent);
 
         tempEvent = eventRepository.save(Event.builder()
                 .category("Academic")
@@ -48,6 +66,12 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petAllowed(false).build());
         tempEvent.setOrganizer(org1);
         org1.getOwnEvents().add(tempEvent);
+        tempEvent.getParticipants().add(b);
+        tempEvent.getParticipants().add(c);
+        tempEvent.getParticipants().add(d);
+        b.getEventHistory().add(tempEvent);
+        c.getEventHistory().add(tempEvent);
+        d.getEventHistory().add(tempEvent);
 
         tempEvent = eventRepository.save(Event.builder()
                 .category("Cultural")
@@ -59,6 +83,12 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petAllowed(false).build());
         tempEvent.setOrganizer(org2);
         org2.getOwnEvents().add(tempEvent);
+        tempEvent.getParticipants().add(c);
+        tempEvent.getParticipants().add(d);
+        tempEvent.getParticipants().add(e);
+        c.getEventHistory().add(tempEvent);
+        d.getEventHistory().add(tempEvent);
+        e.getEventHistory().add(tempEvent);
 
         tempEvent = eventRepository.save(Event.builder()
                 .category("Cultural")
@@ -70,5 +100,11 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
                 .petAllowed(true).build());
         tempEvent.setOrganizer(org3);
         org3.getOwnEvents().add(tempEvent);
+        tempEvent.getParticipants().add(e);
+        tempEvent.getParticipants().add(a);
+        tempEvent.getParticipants().add(b);
+        e.getEventHistory().add(tempEvent);
+        a.getEventHistory().add(tempEvent);
+        b.getEventHistory().add(tempEvent);
     }
 }
